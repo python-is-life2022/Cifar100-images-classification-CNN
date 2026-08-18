@@ -30,3 +30,8 @@ The dataset is structured for CNN processing with the following tensor shapes:
   Representing the single integer index for each class label.
 
 *Note: The input pipeline expects these dimensions for optimal compatibility with the proposed CNN architecture.*
+
+## Label Preprocessing
+The CIFAR-100 target labels are originally loaded with shape `(N, 1)`.  
+To simplify model training and evaluation, the labels are squeezed into a one-dimensional array with shape `(N,)` using `np.squeeze()`.
+
