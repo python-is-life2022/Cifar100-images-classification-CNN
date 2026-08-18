@@ -35,3 +35,12 @@ The dataset is structured for CNN processing with the following tensor shapes:
 The CIFAR-100 target labels are originally loaded with shape `(N, 1)`.  
 To simplify model training and evaluation, the labels are squeezed into a one-dimensional array with shape `(N,)` using `np.squeeze()`.
 
+## Class Label Mapping and Image Visualization
+
+CIFAR-100 provides numeric labels for its 100 image categories. The `fine_labels` list is used to map each label index to the corresponding class name, such as `apple`, `automobile`, `lion`, or `tiger`.
+
+The following code displays a selected image from the training dataset and shows its class name as the plot title:
+```python
+i = int(input("Enter an image number: "))
+plt.imshow(X_train[i])
+plt.title(fine_labels[y_train[i]])
