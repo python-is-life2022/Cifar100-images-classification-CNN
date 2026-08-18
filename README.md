@@ -256,9 +256,17 @@ Dense(100)
 
 ### 📈 Training Curves & Visualization
 
-![Experiment 4 Training Curves](charts/train_4_accuracy.png)
+* Accuracy:
 
-![Experiment 4 Training Curves](charts/train_4_Loss.png)
+<p align="center">
+  <img src="charts/train_4_accuracy.png" alt="Experiment 4 Training History" width="750"/>
+</p>
+
+* Loss:
+  
+<p align="center">
+  <img src="charts/train_4_Loss.png" alt="Experiment 4 Training History" width="750"/>
+</p>
 
 #### 📉 Curve Analysis:
 * **Accuracy Trajectory:** The training curve demonstrates exceptionally smooth and steady growth throughout the 100 epochs, reaching **97.21%**, directly proving the training stabilization enabled by **Batch Normalization**.
