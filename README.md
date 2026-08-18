@@ -106,6 +106,11 @@ To enhance feature representation capacity for 100 fine-grained categories, the 
 - **Added Layer Block**: Added two consecutive `Conv2D(64, (3, 3), padding='same')` layers followed by a second `MaxPooling2D(2, 2)`.
 - **Extended Training**: Epochs increased from 40 to 60.
 
+| Metric / Split | Train Set | Test Set |
+| :--- | :--- | :--- |
+| **Accuracy** | **13.78%** | **12.37%** |
+| **Loss** | **491.99** | **5.60e+02** |
+
 #### Learning Curves
 * Accuracy:
   
