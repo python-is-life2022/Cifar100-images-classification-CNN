@@ -83,11 +83,11 @@ This initial model aims to set a performance baseline using a custom CNN archite
 
 > **Technical Note**: The high loss observed during evaluation is due to an input scale mismatch (evaluating on raw `[0, 255]` pixel data instead of normalized `[0, 1]` data). This has been identified and will be addressed in subsequent experiments.
 #### Learning Curves (Experiment 1)
-
+*Accuracy: 
 <p align="center">
   <img src="charts/train_1_accuracy.png" alt="Experiment 1 Training Curves" width="800"/>
 </p>
-
+*Loss:
 <p align="center">
   <img src="charts/train_1_loss.png" alt="Experiment 1 loss Curves" width="800"/>
 </p>
@@ -95,9 +95,6 @@ This initial model aims to set a performance baseline using a custom CNN archite
 - **Observations**: 
   - The model experiences severe underfitting / plateauing early on due to the combination of `GlobalAveragePooling2D` directly after only two shallow conv layers and aggressive `Dropout` (up to 0.5) on small dense layers.
   - Tracking these curves serves as a visual benchmark for subsequent architectural iterations.
-### Experiment 2: Deeper CNN with 4 Convolutional Layers
-
-In this experiment, network depth is expanded by introducing a second block of two `Conv2D(64)` layers and an additional `MaxPooling2D(2, 2)` layer. Training epochs are also increased from 40 to 60 to allow further feature extraction.
 
 ### Experiment 2: Deeper 4-Layer Convolutional Network
 
@@ -108,12 +105,13 @@ To enhance feature representation capacity for 100 fine-grained categories, the 
 - **Extended Training**: Epochs increased from 40 to 60.
 
 #### Learning Curves
-
+*Accuracy: 
 <p align="center">
   <img src="charts/train_2_accuracy.png" alt="Experiment 2 Training Accuracy Curves" width="800"/>
 </p>
+*Loss:
 <p align="center">
-  <img src="charts/train_2_Loss.png" alt="Experiment 2 Training Loss Curves" width="800"/>
+  <img src="charts/train_2_loss.png" alt="Experiment 2 Training Loss Curves" width="800"/>
 </p>
 
 #### Key Takeaways
