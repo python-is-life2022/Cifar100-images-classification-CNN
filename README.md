@@ -130,7 +130,9 @@ To enhance feature representation capacity for 100 fine-grained categories, the 
 ### 🧪 Experiment 3: Increasing Dense Capacity and Training Duration
 
 #### 📌 Objective & Overview
-In this experiment, the feature extraction backbone from Experiment 2 is retained (4 convolutional layers with 128 filters each), while the classification head is expanded with higher dense capacity (`Dense(256)` followed by `Dense(128)`). The training duration is extended to 100 epochs to observe long-term convergence and provide the network sufficient capacity for the 100 fine-grained classes.
+Experiment 3 retains the convolutional feature extractor from Experiment 2 while increasing the capacity of the classification head. The model uses two dense layers with 256 and 128 units, moderate Dropout regularization, and a longer training schedule of 100 epochs.
+
+The objective was to determine whether a larger fully connected classifier and additional training time could improve performance on the 100 fine-grained CIFAR-100 classes.
 
 ---
 
@@ -138,22 +140,26 @@ In this experiment, the feature extraction backbone from Experiment 2 is retaine
 
 | Component / Layer | Details |
 | :--- | :--- |
-| **Input Shape** | `(32, 32, 3)` (Normalized float32) |
-| **Conv Block 1** | $2\times$ `Conv2D(128, kernel_size=(3, 3), padding='same', relu)` $\rightarrow$ `MaxPooling2D(2, 2)` |
-| **Conv Block 2** | $2\times$ `Conv2D(128, kernel_size=(3, 3), padding='same', relu)` $\rightarrow$ `MaxPooling2D(2, 2)` |
-| **Pooling** | `GlobalAveragePooling2D()` |
-| **Classifier Head** | `Dense(256, relu)` $\rightarrow$ `Dropout(0.3)` $\rightarrow$ `Dense(128, relu)` $\rightarrow$ `Dropout(0.4)` |
-| **Output Layer** | `Dense(100)` (Logits) |
+| **Input Shape** | `(32, 32, 3)` normalized images |
+| **Conv Block 1** | $2\times$ `Conv2D(128, 3×3, padding='same', relu)` → `MaxPooling2D(2×2)` |
+| **Conv Block 2** | $2\times$ `Conv2D(128, 3×3, padding='same', relu)` → `MaxPooling2D(2×2)` |
+| **Feature Aggregation** | `GlobalAveragePooling2D()` |
+| **Classifier Head** | `Dense(256, relu)` → `Dropout(0.3)` → `Dense(128, relu)` → `Dropout(0.4)` |
+| **Output Layer** | `Dense(100)` output logits |
 | **Loss Function** | `SparseCategoricalCrossentropy(from_logits=True)` |
 | **Optimizer** | `Adam(learning_rate=0.001)` |
-| **Batch Size & Epochs** | `32` batch size \| `100` epochs \| `validation_split=0.2` |
+| **Batch Size** | `32` |
+| **Epochs** | `100` |
+| **Validation Split** | `0.2` |
 
 ---
 
-#### 🔑 Key Modifications
-- **Expanded Dense Capacity:** Increased classification head capacity using `Dense(256)` and `Dense(128)` to better handle high-dimensional feature representations.
-- **Extended Training Budget:** Raised epochs from 60 to 100 to evaluate convergence and sustained learning trends.
-- **Tuned Dropout Rates:** Set Dropout to 0.3 and 0.4 to prevent overfitting while avoiding excessive penalty on representational capacity.
+#### 🔑 Key Changes from Experiment 2
+
+- **Higher Dense Capacity:** Used `Dense(256)` and `Dense(128)` to increase the model's classification capacity.
+- **Longer Training:** Increased the training duration to **100 epochs**.
+- **Moderate Regularization:** Applied `Dropout(0.3)` and `Dropout(0.4)` after dense layers.
+- **Feature Extraction:** Maintained four convolutional layers with 128 filters to preserve the deeper feature-extraction backbone.
 
 ---
 
@@ -163,16 +169,30 @@ In this experiment, the feature extraction backbone from Experiment 2 is retaine
   <img src="experiment_3_history.png" alt="Experiment 3 Training History" width="750"/>
 </p>
 
+<p align="center">
+  <img src="experiment_3_history.png" alt="Experiment 3 Training History" width="750"/>
+</p>
+
 ---
 
-#### 📈 Results & Evaluation
+#### 📈 Results & Evaluation Metrics
 
-| Split | Loss | Accuracy |
-| :--- | :--- | :--- |
-| **Train** | *TBD* | *TBD*% |
-| **Validation** | *TBD* | *TBD*% |
-| **Test** | *TBD* | *TBD*% |
+| Metric / Split | Train Set | Test Set |
+| :--- | :---: | :---: |
+| **Accuracy** | **22.10%** | **16.43%** |
+| **Loss** | **1160.75** | **1.50e+03** |
 
-> **Summary Observation:**  
-> *(Add your final notes here once evaluation finishes, e.g., comparison against Experiment 2 accuracy/loss convergence).*
+---
+
+#### 🔍 Analysis & Key Takeaways
+
+- **Improved Accuracy:** Test accuracy increased from **12.37%** in the earlier experiments to **16.43%**, an improvement of approximately **4.06 percentage points**. This suggests that increasing dense-layer capacity and training longer helped the model learn more useful class-discriminative features.
+
+- **Generalization Gap:** Training accuracy reached **22.10%**, while test accuracy was **16.43%**. The approximately **5.67 percentage-point gap** indicates the beginning of overfitting, although the model still has relatively low overall accuracy for CIFAR-100.
+
+- **Unusually Large Evaluation Loss:** The train and test losses are very large compared with typical cross-entropy values. Since the loss function uses `from_logits=True`, verify that evaluation is performed with normalized images:
+```python
+  model_3.evaluate(X_train_norm, y_train)
+  model_3.evaluate(X_test_norm, y_test)
+  
 
