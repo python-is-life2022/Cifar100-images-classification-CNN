@@ -252,6 +252,18 @@ Dropout(0.3),
 Dense(100)
 ])
 ```
+---
+
+### 📈 Training Curves & Visualization
+
+![Experiment 4 Training Curves](charts/train_4_accuracy.png)
+
+![Experiment 4 Training Curves](charts/train_4_loss.png)
+
+#### 📉 Curve Analysis:
+* **Accuracy Trajectory:** The training curve demonstrates exceptionally smooth and steady growth throughout the 100 epochs, reaching **97.21%**, directly proving the training stabilization enabled by **Batch Normalization**.
+* **Loss Minimization:** Training loss descends sharply and reaches a steady minimum plateau at **0.11**, indicating strong model convergence without optimization stalls or gradient explosion.
+
 ⚙️ Training Parameters
 * Optimizer: Adam (
 𝛼
