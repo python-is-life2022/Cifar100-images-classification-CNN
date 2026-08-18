@@ -83,11 +83,13 @@ This initial model aims to set a performance baseline using a custom CNN archite
 
 > **Technical Note**: The high loss observed during evaluation is due to an input scale mismatch (evaluating on raw `[0, 255]` pixel data instead of normalized `[0, 1]` data). This has been identified and will be addressed in subsequent experiments.
 #### Learning Curves (Experiment 1)
-*Accuracy: 
+* Accuracy:
+  
 <p align="center">
   <img src="charts/train_1_accuracy.png" alt="Experiment 1 Training Curves" width="800"/>
 </p>
-*Loss:
+* Loss:
+
 <p align="center">
   <img src="charts/train_1_loss.png" alt="Experiment 1 loss Curves" width="800"/>
 </p>
@@ -105,11 +107,13 @@ To enhance feature representation capacity for 100 fine-grained categories, the 
 - **Extended Training**: Epochs increased from 40 to 60.
 
 #### Learning Curves
-*Accuracy: 
+* Accuracy:
+  
 <p align="center">
   <img src="charts/train_2_accuracy.png" alt="Experiment 2 Training Accuracy Curves" width="800"/>
 </p>
-*Loss:
+* Loss:
+
 <p align="center">
   <img src="charts/train_2_loss.png" alt="Experiment 2 Training Loss Curves" width="800"/>
 </p>
