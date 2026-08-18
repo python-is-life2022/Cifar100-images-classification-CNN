@@ -164,13 +164,16 @@ The objective was to determine whether a larger fully connected classifier and a
 ---
 
 #### 📊 Visualizations & Learning Curves
+* Accuracy:
 
 <p align="center">
-  <img src="experiment_3_history.png" alt="Experiment 3 Training History" width="750"/>
+  <img src="charts/train_3_accuracy.png" alt="Experiment 3 Training History" width="750"/>
 </p>
 
+* Loss:
+  
 <p align="center">
-  <img src="experiment_3_history.png" alt="Experiment 3 Training History" width="750"/>
+  <img src="charts/train_3_loss.png" alt="Experiment 3 Training History" width="750"/>
 </p>
 
 ---
