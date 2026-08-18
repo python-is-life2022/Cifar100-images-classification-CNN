@@ -204,6 +204,20 @@ The objective was to determine whether a larger fully connected classifier and a
 Evaluate the impact of integrating **Batch Normalization** layers after deep convolutional feature extractors, combined with structured **Dropout** regularization, to stabilize training and improve generalizability on CIFAR-100.
 
 ---
+## Experiments 4
+
+### 🔬 Impact of Batch Normalization
+
+Integrating **Batch Normalization** layers after each convolution block proved to be the most impactful architectural enhancement in this project so far, pushing the test accuracy to **61.09%**.
+
+* **Internal Covariate Shift Reduction:** Standardizing layer inputs across mini-batches stabilized feature representations, allowing deep layers to train effectively without gradient vanishing or explosion issues.
+* **Faster and Stable Convergence:** BatchNorm smoothed the loss landscape, enabling the model to fully utilize its high capacity and achieve **97.21%** training accuracy within 100 epochs.
+* **Implicit Regularization:** Computing batch-level statistics introduced slight noise into activations, helping the deep network regularize better than using standalone Dropout.
+
+#### ⚠️ The Remaining Bottleneck: Overfitting Gap
+Although Batch Normalization dramatically improved optimization and representation capacity, it is not designed to eliminate data-scarcity overfitting on its own. With only 500 images per class in CIFAR-100, the network memorized training patterns (resulting in a **~36% generalization gap**). 
+
+**Next Iteration Requirement:** Introducing **Data Augmentation** (Random Flip, Rotation, Shift) to expose the model to continuous data variations and bridge this generalization gap.
 
 ### 🏗️ Model Architecture
 ```python
@@ -249,6 +263,8 @@ Dense(100)
 * Batch Size: 32
 * Epochs: 100
 
-Metric	Training Set	Test Set
-Accuracy	97.21%	61.09%
-Loss	0.11	1.70
+| Metric | Training Set | Test Set | Generalization Gap |
+| :--- | :---: | :---: | :---: |
+| **Accuracy** | **97.21%** | **61.09%** | **36.12%** |
+| **Loss** | **0.11** | **1.70** | **1.59** |
+
