@@ -197,7 +197,7 @@ The objective was to determine whether a larger fully connected classifier and a
 ```python
   model_3.evaluate(X_train_norm, y_train)
   model_3.evaluate(X_test_norm, y_test)
-  
+``` 
 ## 🔬 Experiment 4: Batch Normalization & Deep Convolutional Blocks
 
 ### 🎯 Objective
@@ -217,7 +217,7 @@ Integrating **Batch Normalization** layers after each convolution block proved t
 #### ⚠️ The Remaining Bottleneck: Overfitting Gap
 Although Batch Normalization dramatically improved optimization and representation capacity, it is not designed to eliminate data-scarcity overfitting on its own. With only 500 images per class in CIFAR-100, the network memorized training patterns (resulting in a **~36% generalization gap**). 
 
-**Next Iteration Requirement:** Introducing **Data Augmentation** (Random Flip, Rotation, Shift) to expose the model to continuous data variations and bridge this generalization gap.
+** Next Iteration Requirement:** Introducing **Data Augmentation** (Random Flip, Rotation, Shift) to expose the model to continuous data variations and bridge this generalization gap.
 
 ### 🏗️ Model Architecture
 ```python
