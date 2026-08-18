@@ -198,4 +198,57 @@ The objective was to determine whether a larger fully connected classifier and a
   model_3.evaluate(X_train_norm, y_train)
   model_3.evaluate(X_test_norm, y_test)
   
+## 🔬 Experiment 4: Batch Normalization & Deep Convolutional Blocks
 
+### 🎯 Objective
+Evaluate the impact of integrating **Batch Normalization** layers after deep convolutional feature extractors, combined with structured **Dropout** regularization, to stabilize training and improve generalizability on CIFAR-100.
+
+---
+
+### 🏗️ Model Architecture
+```python
+model_4 = Sequential([
+# Block 1
+Conv2D(128, (3, 3), padding='same', activation='relu', input_shape=(32, 32, 3)),
+Conv2D(128, (3, 3), padding='same', activation='relu'),
+BatchNormalization(),
+MaxPooling2D(2, 2),
+Dropout(0.2),
+
+# Block 2
+Conv2D(128, (3, 3), padding='same', activation='relu'),
+Conv2D(128, (3, 3), padding='same', activation='relu'),
+BatchNormalization(),
+MaxPooling2D(2, 2),
+Dropout(0.3),
+
+# Block 3
+Conv2D(256, (3, 3), padding='same', activation='relu'),
+Conv2D(256, (3, 3), padding='same', activation='relu'),
+BatchNormalization(),
+MaxPooling2D(2, 2),
+Dropout(0.4),
+
+# Classification Head
+GlobalAveragePooling2D(),
+Dense(256, activation='relu'),
+Dropout(0.25),
+Dense(128, activation='relu'),
+Dropout(0.3),
+Dense(100)
+])
+```
+⚙️ Training Parameters
+* Optimizer: Adam (
+𝛼
+=
+0.0001
+α=0.0001
+)
+* Loss: SparseCategoricalCrossentropy (from_logits=True)
+* Batch Size: 32
+* Epochs: 100
+
+Metric	Training Set	Test Set
+Accuracy	97.21%	61.09%
+Loss	0.11	1.70
