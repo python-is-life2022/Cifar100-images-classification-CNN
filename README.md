@@ -95,4 +95,27 @@ This initial model aims to set a performance baseline using a custom CNN archite
 - **Observations**: 
   - The model experiences severe underfitting / plateauing early on due to the combination of `GlobalAveragePooling2D` directly after only two shallow conv layers and aggressive `Dropout` (up to 0.5) on small dense layers.
   - Tracking these curves serves as a visual benchmark for subsequent architectural iterations.
+### Experiment 2: Deeper CNN with 4 Convolutional Layers
 
+In this experiment, network depth is expanded by introducing a second block of two `Conv2D(64)` layers and an additional `MaxPooling2D(2, 2)` layer. Training epochs are also increased from 40 to 60 to allow further feature extraction.
+
+### Experiment 2: Deeper 4-Layer Convolutional Network
+
+To enhance feature representation capacity for 100 fine-grained categories, the convolutional backbone was extended with a second convolutional block and trained for 60 epochs.
+
+#### Architectural Modifications
+- **Added Layer Block**: Added two consecutive `Conv2D(64, (3, 3), padding='same')` layers followed by a second `MaxPooling2D(2, 2)`.
+- **Extended Training**: Epochs increased from 40 to 60.
+
+#### Learning Curves
+
+<p align="center">
+  <img src="charts/train_2_accuracy.png" alt="Experiment 2 Training Accuracy Curves" width="800"/>
+</p>
+<p align="center">
+  <img src="charts/train_2_Loss.png" alt="Experiment 2 Training Loss Curves" width="800"/>
+</p>
+
+#### Key Takeaways
+- Adding hierarchical depth allowed the network to learn higher-level spatial features compared to Experiment 1.
+- *Note*: Ensure final evaluation is executed on normalized tensors (`X_test_norm`) to accurately reflect true test accuracy.
