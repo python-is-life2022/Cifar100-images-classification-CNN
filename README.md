@@ -82,3 +82,17 @@ This initial model aims to set a performance baseline using a custom CNN archite
 | **Train Loss** | 579.22 |
 
 > **Technical Note**: The high loss observed during evaluation is due to an input scale mismatch (evaluating on raw `[0, 255]` pixel data instead of normalized `[0, 1]` data). This has been identified and will be addressed in subsequent experiments.
+#### Learning Curves (Experiment 1)
+
+<p align="center">
+  <img src="charts/train_1_accuracy.png" alt="Experiment 1 Training Curves" width="800"/>
+</p>
+
+<p align="center">
+  <img src="charts/train_1_loss.png" alt="Experiment 1 Training Curves" width="800"/>
+</p>
+
+- **Observations**: 
+  - The model experiences severe underfitting / plateauing early on due to the combination of `GlobalAveragePooling2D` directly after only two shallow conv layers and aggressive `Dropout` (up to 0.5) on small dense layers.
+  - Tracking these curves serves as a visual benchmark for subsequent architectural iterations.
+
