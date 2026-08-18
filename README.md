@@ -58,4 +58,10 @@ Below is a sample of images from the CIFAR-100 training set with their correspon
 <p align="center">
   <img src="./images/train_image.png" alt="CIFAR-100 Sample Images" width="600"/>
 </p>
+## Data Preprocessing & Normalization
 
+Pixel intensities are originally represented as integers in the range `[0, 255]`. To optimize gradient descent and maintain numerical stability, the training and testing datasets are normalized to the `[0.0, 1.0]` range:
+```python
+X_train_norm = X_train.astype('float32') / 255.0
+X_test_norm = X_test.astype('float32') / 255.0
+```
