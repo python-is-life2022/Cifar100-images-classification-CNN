@@ -121,3 +121,53 @@ To enhance feature representation capacity for 100 fine-grained categories, the 
 #### Key Takeaways
 - Adding hierarchical depth allowed the network to learn higher-level spatial features compared to Experiment 1.
 - *Note*: Ensure final evaluation is executed on normalized tensors (`X_test_norm`) to accurately reflect true test accuracy.
+
+### 🧪 Experiment 3: Increasing Dense Capacity and Training Duration
+
+#### 📌 Objective & Overview
+In this experiment, the feature extraction backbone from Experiment 2 is retained (4 convolutional layers with 128 filters each), while the classification head is expanded with higher dense capacity (`Dense(256)` followed by `Dense(128)`). The training duration is extended to 100 epochs to observe long-term convergence and provide the network sufficient capacity for the 100 fine-grained classes.
+
+---
+
+#### ⚙️ Architecture & Hyperparameters
+
+| Component / Layer | Details |
+| :--- | :--- |
+| **Input Shape** | `(32, 32, 3)` (Normalized float32) |
+| **Conv Block 1** | $2\times$ `Conv2D(128, kernel_size=(3, 3), padding='same', relu)` $\rightarrow$ `MaxPooling2D(2, 2)` |
+| **Conv Block 2** | $2\times$ `Conv2D(128, kernel_size=(3, 3), padding='same', relu)` $\rightarrow$ `MaxPooling2D(2, 2)` |
+| **Pooling** | `GlobalAveragePooling2D()` |
+| **Classifier Head** | `Dense(256, relu)` $\rightarrow$ `Dropout(0.3)` $\rightarrow$ `Dense(128, relu)` $\rightarrow$ `Dropout(0.4)` |
+| **Output Layer** | `Dense(100)` (Logits) |
+| **Loss Function** | `SparseCategoricalCrossentropy(from_logits=True)` |
+| **Optimizer** | `Adam(learning_rate=0.001)` |
+| **Batch Size & Epochs** | `32` batch size \| `100` epochs \| `validation_split=0.2` |
+
+---
+
+#### 🔑 Key Modifications
+- **Expanded Dense Capacity:** Increased classification head capacity using `Dense(256)` and `Dense(128)` to better handle high-dimensional feature representations.
+- **Extended Training Budget:** Raised epochs from 60 to 100 to evaluate convergence and sustained learning trends.
+- **Tuned Dropout Rates:** Set Dropout to 0.3 and 0.4 to prevent overfitting while avoiding excessive penalty on representational capacity.
+
+---
+
+#### 📊 Visualizations & Learning Curves
+
+<p align="center">
+  <img src="experiment_3_history.png" alt="Experiment 3 Training History" width="750"/>
+</p>
+
+---
+
+#### 📈 Results & Evaluation
+
+| Split | Loss | Accuracy |
+| :--- | :--- | :--- |
+| **Train** | *TBD* | *TBD*% |
+| **Validation** | *TBD* | *TBD*% |
+| **Test** | *TBD* | *TBD*% |
+
+> **Summary Observation:**  
+> *(Add your final notes here once evaluation finishes, e.g., comparison against Experiment 2 accuracy/loss convergence).*
+
