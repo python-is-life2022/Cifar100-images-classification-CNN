@@ -85,7 +85,7 @@ This initial model aims to set a performance baseline using a custom CNN archite
 #### Learning Curves (Experiment 1)
 
 <p align="center">
-  <img src="charts/train_1_accuary.png" alt="Experiment 1 Training Curves" width="800"/>
+  <img src="charts/train_1_accuracy.png" alt="Experiment 1 Training Curves" width="800"/>
 </p>
 
 <p align="center">
