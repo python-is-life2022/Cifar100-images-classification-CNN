@@ -14,6 +14,7 @@ This project utilizes TensorFlow/Keras to build, train, and evaluate a Convoluti
 The project uses the **CIFAR-100** dataset, which consists of 60,000 32x32 color images across 100 distinct classes.
 ```python
 (X_train, y_train), (X_test, y_test) = cifar100.load_data(label_mode='fine')
+```
 ## Dataset Configuration
 The project utilizes the CIFAR-100 dataset, containing 60,000 color images (32×32 resolution) categorized into 100 fine labels.
 
