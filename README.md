@@ -65,3 +65,20 @@ Pixel intensities are originally represented as integers in the range `[0, 255]`
 X_train_norm = X_train.astype('float32') / 255.0
 X_test_norm = X_test.astype('float32') / 255.0
 ```
+## Experiments History
+
+### Experiment 1: Baseline CNN
+This initial model aims to set a performance baseline using a custom CNN architecture.
+
+#### Architecture
+- **Layers**: 2x Conv2D filters, MaxPooling, GlobalAveragePooling, and a stack of Dense layers with Dropout (0.3 - 0.5) to prevent overfitting.
+- **Training**: Trained for 40 epochs with a batch size of 32.
+
+#### Results
+| Metric | Result |
+| :--- | :--- |
+| **Train Accuracy** | 5.64% |
+| **Test Accuracy** | 5.39% |
+| **Train Loss** | 579.22 |
+
+> **Technical Note**: The high loss observed during evaluation is due to an input scale mismatch (evaluating on raw `[0, 255]` pixel data instead of normalized `[0, 1]` data). This has been identified and will be addressed in subsequent experiments.
