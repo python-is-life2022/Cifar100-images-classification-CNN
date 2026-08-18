@@ -44,3 +44,22 @@ The following code displays a selected image from the training dataset and shows
 i = int(input("Enter an image number: "))
 plt.imshow(X_train[i])
 plt.title(fine_labels[y_train[i]])
+plt.savefig(f'{fine_labels[y_train[i]]}_image.png')
+```
+## Sample Dataset Images
+
+Below is a sample of images from the CIFAR-100 training set with their corresponding fine-grained class labels:
+
+<p align="center">
+  <img src="./images/leopard.png" alt="CIFAR-100 Sample Images" width="600"/>
+</p>
+<p align="center">
+  <img src="./images/leopard_image.png" alt="CIFAR-100 Sample Images" width="600"/>
+</p>
+<p align="center">
+  <img src="./images/motorcycle_img.png" alt="CIFAR-100 Sample Images" width="600"/>
+</p>
+<p align="center">
+  <img src="./images/train_image.png" alt="CIFAR-100 Sample Images" width="600"/>
+</p>
+
