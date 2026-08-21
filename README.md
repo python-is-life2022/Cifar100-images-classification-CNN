@@ -341,4 +341,21 @@ The following parameters were configured to introduce spatial and geometric vari
 - **Fill Mode:** Set to `'constant'` to handle newly created pixels during transformations.
 
 This pipeline generates batch-wise augmented data with a size of 32, ensuring the model sees a unique version of the dataset in every epoch.
+## Training Data Pipeline
 
+After splitting the normalized training data into training and validation subsets, the data augmentation pipeline is applied only to the training split.
+
+The augmented training batches are generated from:
+
+- `X_train_split`
+- `y_train_split`
+
+using `ImageDataGenerator.flow()`:
+```python
+train_generation = train_datagen.flow(
+X_train_split,
+y_train_split,
+batch_size=32,
+shuffle=True
+)
+```
