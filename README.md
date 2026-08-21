@@ -365,111 +365,272 @@ batch_size=32,
 shuffle=True
 )
 ```
-🚀 Experiment 5: Augmented CNN with Batch Normalization
-🎯 Objective
-The objective of this experiment is to combine the strongest components from the previous experiments:
+<div align="center">
 
-* Deep convolutional feature extraction
-* Batch Normalization
-* Progressive Dropout
-* Global Average Pooling
-* Data Augmentation
-* A separate validation set
-Unlike the previous experiment, where the model achieved very high training accuracy but showed a large generalization gap, this version focuses on improving performance on unseen images.
+# CIFAR-100 CNN
 
-🏗️ Model Architecture
-The model uses three convolutional blocks. The number of filters increases from 64 to 256 as the spatial dimensions decrease.
+A compact convolutional neural network for image classification on the CIFAR-100 dataset.
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-    Input,
-    Conv2D,
-    BatchNormalization,
-    Activation,
-    MaxPooling2D,
-    Dropout,
-    GlobalAveragePooling2D,
-    Dense
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![TensorFlow](https://img.shields.io/badge/TensorFlow-2.x-FF6F00?logo=tensorflow&logoColor=white)](https://www.tensorflow.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2ea44f.svg)](#license)
+
+</div>
+
+## Overview
+
+This project trains a CNN to classify the 100 fine-grained classes in CIFAR-100. The model uses progressively wider convolution blocks, batch normalization, dropout, and global average pooling to keep the classifier compact while preserving spatial features.
+
+## Architecture
+
+The network follows a simple three-stage feature extractor. Each stage doubles the channel capacity, reduces the spatial resolution with max pooling, and applies dropout for regularization. Global average pooling replaces a large flattening layer before the final classifier.
+
+| Stage | Layers | Output shape | Dropout |
+|---|---|---:|---:|
+| Input | RGB image | `32 x 32 x 3` | — |
+| Block 1 | `Conv2D(64)` x2, BatchNorm + ReLU, MaxPool | `16 x 16 x 64` | `0.10` |
+| Block 2 | `Conv2D(128)` x2, BatchNorm + ReLU, MaxPool | `8 x 8 x 128` | `0.15` |
+| Block 3 | `Conv2D(256)` x2, BatchNorm + ReLU, MaxPool | `4 x 4 x 256` | `0.20` |
+| Classifier | GlobalAveragePooling, Dense(256, ReLU) | `256` | `0.30` |
+| Output | Dense(100) logits | `100` | — |
+
+### Model definition
+
+```python
+inputs = keras.Input(shape=(32, 32, 3))
+x = inputs
+
+for filters, dropout in [(64, 0.10), (128, 0.15), (256, 0.20)]:
+    x = layers.Conv2D(filters, 3, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+    x = layers.Conv2D(filters, 3, padding="same")(x)
+    x = layers.BatchNormalization()(x)
+    x = layers.Activation("relu")(x)
+    x = layers.MaxPooling2D()(x)
+    x = layers.Dropout(dropout)(x)
+
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dense(256, activation="relu")(x)
+x = layers.Dropout(0.30)(x)
+outputs = layers.Dense(100)(x)  # logits
+
+model = keras.Model(inputs, outputs)
+```
+
+## Dataset & preprocessing
+
+- **Dataset:** CIFAR-100, with `32 x 32` RGB images and `100` classes.
+- Pixel values are converted to floating point and scaled to `[0, 1]`.
+- The model returns logits for the 100 classes.
+- Training augmentation uses random horizontal flips and small image translations.
+
+```python
+(x_train, y_train), (x_test, y_test) = keras.datasets.cifar100.load_data(
+    label_mode="fine"
 )
-from tensorflow.keras.optimizers import Adam
-from tensorflow.keras.losses import SparseCategoricalCrossentropy
+x_train = x_train.astype("float32") / 255.0
+x_test = x_test.astype("float32") / 255.0
+```
 
-model = Sequential([
-    Input(shape=(32, 32, 3)),
+## Training
 
-    # Convolutional Block 1
-    Conv2D(
-        64,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+```python
+loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+model.compile(optimizer="adam", loss=loss, metrics=["accuracy"])
 
-    Conv2D(
-        64,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+history = model.fit(
+    x_train,
+    y_train,
+    validation_split=0.1,
+    epochs=50,
+    batch_size=64,
+)
+```
 
-    MaxPooling2D((2, 2)),
-    Dropout(0.10),
+## Results
 
-    # Convolutional Block 2
-    Conv2D(
-        128,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+| Metric | Training | Test |
+|---|---:|---:|
+| Accuracy | **78.64%** | **62.35%** |
+| Loss | **0.72** | **1.53** |
 
-    Conv2D(
-        128,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+The gap between training and test accuracy indicates some overfitting. Stronger augmentation, weight decay, a learning-rate schedule, and additional validation-driven regularization could improve generalization.
 
-    MaxPooling2D((2, 2)),
-    Dropout(0.15),
+## Learning curves
 
-    # Convolutional Block 3
-    Conv2D(
-        256,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+<div align="center">
 
-    Conv2D(
-        256,
-        (3, 3),
-        padding='same',
-        use_bias=False
-    ),
-    BatchNormalization(),
-    Activation('relu'),
+<img src="charts/train_5_accuracy.png" alt="Training accuracy curve" width="48%">
+<img src="charts/train_5_loss.png" alt="Training loss curve" width="48%">
 
-    MaxPooling2D((2, 2)),
-    Dropout(0.20),
+</div>
 
-    # Feature Aggregation
-    GlobalAveragePooling2D(),
+## Inference
 
-    # Classification Head
-    Dense(256, activation='relu'),
-    Dropout(0.30),
+```python
+import numpy as np
+from tensorflow import keras
 
-    # Output logits for 100 classes
-    Dense(100)
-])
+model = keras.models.load_model("path/to/model")
+image = x_test[0:1]                         # shape: (1, 32, 32, 3)
+logits = model.predict(image, verbose=0)
+predicted_class = int(np.argmax(logits, axis=1)[0])
+print(f"Predicted class index: {predicted_class}")
+```
+
+## Installation & usage
+
+```bash
+git clone https://github.com/<your-username>/<your-repository>.git
+cd <your-repository>
+pip install tensorflow numpy matplotlib
+python train.py
+```
+
+Update the script name or model path to match your local entry point.
+
+## Project structure
+
+```text
+.
+├── charts/
+│   ├── train_5_accuracy.png
+│   └── train_5_loss.png
+├── train.py
+├── requirements.txt
+└── README.md
+```
+
+## Future improvements
+
+- Add a learning-rate scheduler and weight decay.
+- Compare stronger augmentation policies.
+- Track per-class accuracy and confusion matrices.
+- Evaluate a lightweight pretrained backbone.
+
+## Author
+
+**Your Name**  
+[simurghprojects.com](https://simurghprojects.com)
+
+## License
+
+Released under the [MIT License](LICENSE).
+
+## Phase 2: Final Augmented CNN
+
+Experiment 5 uses the final augmented three-block CNN configuration. The network accepts `32 x 32 x 3` RGB images and increases feature capacity from 64 to 256 channels while progressively reducing spatial resolution.
+
+### Data augmentation
+
+```python
+train_datagen = ImageDataGenerator(
+    rotation_range=10,
+    zoom_range=0.1,
+    shear_range=0.1,
+    horizontal_flip=True,
+    vertical_flip=False,
+    fill_mode="nearest",
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+)
+
+train_generation = train_datagen.flow(
+    X_train_split,
+    y_train_split,
+    batch_size=32,
+    shuffle=True,
+)
+```
+
+### Architecture
+
+| Stage | Layers | Output shape | Dropout |
+|---|---|---:|---:|
+| Input | RGB image | `32 x 32 x 3` | — |
+| Block 1 | `Conv2D(64)` x2, BatchNorm + ReLU, MaxPool2D | `16 x 16 x 64` | `0.10` |
+| Block 2 | `Conv2D(128)` x2, BatchNorm + ReLU, MaxPool2D | `8 x 8 x 128` | `0.15` |
+| Block 3 | `Conv2D(256)` x2, BatchNorm + ReLU, MaxPool2D | `4 x 4 x 256` | `0.20` |
+| Classifier head | GlobalAveragePooling2D, Dense(256, ReLU) | `256` | `0.30` |
+| Output | Dense(100) logits | `100` | — |
+
+Each convolution uses a `3 x 3` kernel, `same` padding, and no bias because batch normalization follows it. The three blocks extract increasingly rich features, max pooling reduces the spatial dimensions, and dropout limits overfitting. Global average pooling keeps the classifier compact before the 256-unit dense layer and final 100-class logits.
+
+### Model definition
+
+```python
+inputs = keras.Input(shape=(32, 32, 3))
+x = inputs
+
+x = layers.Conv2D(64, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.Conv2D(64, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D((2, 2))(x)
+x = layers.Dropout(0.1)(x)
+
+x = layers.Conv2D(128, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.Conv2D(128, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D((2, 2))(x)
+x = layers.Dropout(0.15)(x)
+
+x = layers.Conv2D(256, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.Conv2D(256, (3, 3), padding="same", use_bias=False)(x)
+x = layers.BatchNormalization()(x)
+x = layers.Activation("relu")(x)
+x = layers.MaxPool2D((2, 2))(x)
+x = layers.Dropout(0.2)(x)
+
+x = layers.GlobalAveragePooling2D()(x)
+x = layers.Dense(256, activation="relu")(x)
+x = layers.Dropout(0.3)(x)
+outputs = layers.Dense(100)(x)
+
+model = keras.Model(inputs, outputs)
+```
+
+### Training configuration
+
+```python
+optimizer = keras.optimizers.Adam(learning_rate=0.001)
+loss = keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
+model.compile(
+    optimizer=optimizer,
+    loss=loss,
+    metrics=["accuracy"],
+)
+
+history = model.fit(
+    train_generation,
+    epochs=70,
+    verbose=2,
+)
+```
+
+## Experiment 5 results
+
+| Metric | Training | Test |
+|---|---:|---:|
+| Accuracy | **78.64%** | **62.35%** |
+| Loss | **0.72** | **1.53** |
+
+The training-to-test accuracy gap is **16.29 percentage points** (`78.64% - 62.35%`). Compared with the previous **36% gap**, this is a reduction of **19.71 percentage points**, or approximately **54.75%** relative improvement in the gap. The augmented model therefore generalizes substantially better, although the remaining gap indicates that some overfitting persists.
+
+## Experiment 5 learning curves
+
+<!-- Add the generated training accuracy chart at charts/train_5_accuracy.png. -->
+![Experiment 5 training accuracy](charts/train_5_accuracy.png)
+
+<!-- Add the generated training loss chart at charts/train_5_loss.png. -->
+![Experiment 5 training loss](charts/train_5_loss.png)
+
