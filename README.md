@@ -303,3 +303,11 @@ from tensorflow.keras.layers import Activation
 ```
 * `ImageDataGenerator` is used to apply real-time data augmentation to the training images, including transformations such as horizontal flipping, rotation, shifting, and zooming.
 * `Activation` is used as a separate Keras layer to apply activation functions explicitly within the CNN architecture when needed.
+
+### Data Preprocessing
+
+The data loading, label reshaping, and pixel normalization steps remain unchanged from Phase 1.
+
+For details, see the preprocessing section in the
+[baseline experiment](notebooks/Cifar100_images_classification_CNN.ipynb).
+
