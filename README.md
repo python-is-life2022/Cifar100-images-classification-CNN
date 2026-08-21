@@ -512,7 +512,7 @@ Update the script name or model path to match your local entry point.
 ## Author
 
 **Your Name**  
-[simurghprojects.com](https://simurghprojects.com)
+(https://www.linkedin.com/in/amir-kharazi-7b4a06259/)
 
 ## License
 
