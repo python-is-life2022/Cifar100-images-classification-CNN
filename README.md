@@ -311,6 +311,22 @@ The data loading, label reshaping, and pixel normalization steps remain unchange
 For details, see the preprocessing section in the
 [baseline experiment](notebooks/Cifar100_images_classification_CNN.ipynb).
 
+## Splitting the Training Data into Training and Validation Sets
+
+To evaluate the model during training without using the test set, the normalized training data is divided into two subsets:
+
+- **Training set:** Used to learn the model parameters.
+- **Validation set:** Used to monitor the model's performance on unseen samples during training.
+
+In this split, 80% of the original training data is used for training and 20% is reserved for validation.
+```python
+X_train_split, X_val, y_train_split, y_val = train_test_split(
+X_train_norm,
+y_train,
+test_size=0.2,
+random_state=42
+)
+```
 ### Data Augmentation Strategy
 
 We implemented a comprehensive augmentation pipeline using Keras `ImageDataGenerator`. 
