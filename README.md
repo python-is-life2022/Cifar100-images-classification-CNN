@@ -311,6 +311,12 @@ The data loading, label reshaping, and pixel normalization steps remain unchange
 For details, see the preprocessing section in the
 [baseline experiment](notebooks/Cifar100_images_classification_CNN.ipynb).
 
+## Importing `train_test_split`
+
+To create separate training and validation subsets, the `train_test_split` function is imported from the `sklearn.model_selection` module:
+```python
+from sklearn.model_selection import train_test_split
+```
 ## Splitting the Training Data into Training and Validation Sets
 
 To evaluate the model during training without using the test set, the normalized training data is divided into two subsets:
