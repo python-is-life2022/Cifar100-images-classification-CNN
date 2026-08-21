@@ -365,3 +365,113 @@ batch_size=32,
 shuffle=True
 )
 ```
+🚀 Experiment 5: Augmented CNN with Batch Normalization
+🎯 Objective
+The objective of this experiment is to combine the strongest components from the previous experiments:
+
+* Deep convolutional feature extraction
+* Batch Normalization
+* Progressive Dropout
+* Global Average Pooling
+* Data Augmentation
+* A separate validation set
+Unlike the previous experiment, where the model achieved very high training accuracy but showed a large generalization gap, this version focuses on improving performance on unseen images.
+
+🏗️ Model Architecture
+The model uses three convolutional blocks. The number of filters increases from 64 to 256 as the spatial dimensions decrease.
+```
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import (
+    Input,
+    Conv2D,
+    BatchNormalization,
+    Activation,
+    MaxPooling2D,
+    Dropout,
+    GlobalAveragePooling2D,
+    Dense
+)
+from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.losses import SparseCategoricalCrossentropy
+```
+```
+model = Sequential([
+    Input(shape=(32, 32, 3)),
+
+    # Convolutional Block 1
+    Conv2D(
+        64,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    Conv2D(
+        64,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    MaxPooling2D((2, 2)),
+    Dropout(0.10),
+
+    # Convolutional Block 2
+    Conv2D(
+        128,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    Conv2D(
+        128,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    MaxPooling2D((2, 2)),
+    Dropout(0.15),
+
+    # Convolutional Block 3
+    Conv2D(
+        256,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    Conv2D(
+        256,
+        (3, 3),
+        padding='same',
+        use_bias=False
+    ),
+    BatchNormalization(),
+    Activation('relu'),
+
+    MaxPooling2D((2, 2)),
+    Dropout(0.20),
+
+    # Feature Aggregation
+    GlobalAveragePooling2D(),
+
+    # Classification Head
+    Dense(256, activation='relu'),
+    Dropout(0.30),
+
+    # Output logits for 100 classes
+    Dense(100)
+])
+```
