@@ -311,3 +311,18 @@ The data loading, label reshaping, and pixel normalization steps remain unchange
 For details, see the preprocessing section in the
 [baseline experiment](notebooks/Cifar100_images_classification_CNN.ipynb).
 
+### Data Augmentation Strategy
+
+We implemented a comprehensive augmentation pipeline using Keras `ImageDataGenerator`. 
+The following parameters were configured to introduce spatial and geometric variations:
+
+- **Spatial Transformations:** 
+    - Rotation: 15° range
+    - Zoom: 20% range
+    - Shear: 30% intensity
+    - Width/Height Shifts: 20% and 30% respectively
+- **Flipping:** Enabled for both horizontal and vertical axes to handle orientation variance.
+- **Fill Mode:** Set to `'constant'` to handle newly created pixels during transformations.
+
+This pipeline generates batch-wise augmented data with a size of 32, ensuring the model sees a unique version of the dataset in every epoch.
+
