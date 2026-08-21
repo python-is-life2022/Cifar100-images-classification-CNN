@@ -301,5 +301,5 @@ The following Keras utilities were added in this phase:
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.layers import Activation
 ```
-* ImageDataGenerator is used to apply real-time data augmentation to the training images, including transformations such as horizontal flipping, rotation, shifting, and zooming.
-* Activation is used as a separate Keras layer to apply activation functions explicitly within the CNN architecture when needed.
+* `ImageDataGenerator` is used to apply real-time data augmentation to the training images, including transformations such as horizontal flipping, rotation, shifting, and zooming.
+* `Activation` is used as a separate Keras layer to apply activation functions explicitly within the CNN architecture when needed.
