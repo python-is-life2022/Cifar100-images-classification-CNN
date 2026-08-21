@@ -379,7 +379,7 @@ Unlike the previous experiment, where the model achieved very high training accu
 
 🏗️ Model Architecture
 The model uses three convolutional blocks. The number of filters increases from 64 to 256 as the spatial dimensions decrease.
-```
+
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import (
     Input,
@@ -393,8 +393,7 @@ from tensorflow.keras.layers import (
 )
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import SparseCategoricalCrossentropy
-```
-```
+
 model = Sequential([
     Input(shape=(32, 32, 3)),
 
@@ -474,4 +473,3 @@ model = Sequential([
     # Output logits for 100 classes
     Dense(100)
 ])
-```
