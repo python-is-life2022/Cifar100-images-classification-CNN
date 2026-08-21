@@ -288,3 +288,8 @@ Dense(100)
 | **Accuracy** | **97.21%** | **61.09%** | **36.12%** |
 | **Loss** | **0.11** | **1.70** | **1.59** |
 
+## Phase 2: Data Augmentation for CIFAR-100
+
+In the previous phase, four baseline CNN architectures were implemented and compared. In this phase, the best-performing model is retrained using data augmentation techniques.
+
+The goal is to increase the effective diversity of the training data, reduce overfitting, and improve the model's generalization performance on validation and test data.
