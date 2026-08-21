@@ -293,3 +293,13 @@ Dense(100)
 In the previous phase, four baseline CNN architectures were implemented and compared. In this phase, the best-performing model is retrained using data augmentation techniques.
 
 The goal is to increase the effective diversity of the training data, reduce overfitting, and improve the model's generalization performance on validation and test data.
+
+### Additional Imports
+
+The following Keras utilities were added in this phase:
+```python
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from tensorflow.keras.layers import Activation
+```
+* ImageDataGenerator is used to apply real-time data augmentation to the training images, including transformations such as horizontal flipping, rotation, shifting, and zooming.
+* Activation is used as a separate Keras layer to apply activation functions explicitly within the CNN architecture when needed.
