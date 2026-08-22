@@ -330,8 +330,11 @@ X_train_split, X_val, y_train_split, y_val = train_test_split(
 X_train_norm,
 y_train,
 test_size=0.2,
-random_state=42
+random_state=42,
+stratify= y_train
 )
+
+X_val = X_val.astype('float32')
 ```
 ### Data Augmentation Strategy
 
