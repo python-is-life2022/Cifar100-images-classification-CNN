@@ -485,8 +485,8 @@ print(f"Predicted class index: {predicted_class}")
 ## Installation & usage
 
 ```bash
-git clone https://github.com/<your-username>/<your-repository>.git
-cd <your-repository>
+git clone https://github.com/python-is-life2022/Cifar100-images-classification-CNN.git
+cd Cifar100-images-classification-CNN
 pip install tensorflow numpy matplotlib
 python train.py
 ```
