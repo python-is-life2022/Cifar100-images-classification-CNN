@@ -482,15 +482,6 @@ predicted_class = int(np.argmax(logits, axis=1)[0])
 print(f"Predicted class index: {predicted_class}")
 ```
 
-## Installation & usage
-
-```bash
-git clone https://github.com/python-is-life2022/Cifar100-images-classification-CNN.git
-cd Cifar100-images-classification-CNN
-pip install tensorflow numpy matplotlib
-python train.py
-```
-
 Update the script name or model path to match your local entry point.
 
 ## Project structure
@@ -637,3 +628,28 @@ The training-to-test accuracy gap is **16.29 percentage points** (`78.64% - 62.3
 <!-- Add the generated training loss chart at charts/train_5_loss.png. -->
 ![Experiment 5 training loss](charts/train_5_loss.png)
 
+## Installation & usage
+
+```bash
+git clone https://github.com/python-is-life2022/Cifar100-images-classification-CNN.git
+cd Cifar100-images-classification-CNN
+
+## Installation & Run
+```
+1. Clone the repository:
+```bash
+git clone https://github.com/python-is-life2022/Cifar100-images-classification-CNN
+cd Cifar100-images-classification-CNN
+```
+2. (Optional) Create and activate a virtual environment:
+```bash
+python -m venv .venv
+```
+3. Windows PowerShell:
+```bash
+.\.venv\Scripts\Active.ps1
+```
+4. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
